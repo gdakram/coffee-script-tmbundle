@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>content</key>
+	<string>###*
+My Module's purpose
+@module my-module
+@requires base-build, widget
+###
+YUI.add "my-module", (Y) -&gt;
+  "use strict"
+  ###*
+  @class MyWidget
+  @extends Y.Widget
+  @namespace Y.NFL
+  @constructor
+  ###
+  MyWidget = Y.Base.create "my-module"
+    , 
+      Y.Widget
+    , 
+      []
+    ,
+      ###*
+      Publishing events and running 
+      instantiations that doesn't require DOM.
+      @method initializer
+      ###
+      initializer: -&gt;
+        # publish any events
+        # do any instantiation that doesn't require DOM      
+      
+      ###*
+      The renderUI method creates the following {Y.Node}s and appends them to the {contentBox}:
+      &lt;ol&gt;
+       &lt;li&gt;Title Node&lt;/li&gt;
+       &lt;li&gt;Button Node&lt;/li&gt;
+      &lt;/ol&gt;
+      @method renderUI
+      ###
+      renderUI: -&gt;
+        title = Y.Node.create("&lt;div&gt;&lt;/div&gt;")
+        button = Y.Node.create("&lt;div&gt;Click Me!&lt;/div&gt;")
+        title.addClass @getClassName("title")
+        button.addClass @getClassName("button")
+        @get("contentBox").append Y.all([ title, button ])
+        @_titleNode = title
+        @_buttonNode = button
+        return
+      
+      ###*
+      Bind events listeners in widget.
+      @method bindUI
+      ###
+      bindUI: -&gt;
+        @_buttonClickHandler = @_buttonNode.on("click", (event) -&gt;
+          Y.log "you clicked the button!"
+          event.halt()
+        , this)
+        @after "titleChange", @_afterTitleChange, this
+      
+      ###*
+      The change event handler for the title attribute.
+      @private
+      @method _afterTitleChange
+      @param {Object} event Title Change Event
+      ###
+      _afterTitleChange: (event) -&gt;
+        @_titleNode.setContent event.newVal
+      
+      ###*
+      Method's purpose
+      @method syncUI
+      ###
+      syncUI: -&gt;
+        @_afterTitleChange newVal: @get("title")
+      
+      ###*
+      Detaching event handlers and nulling node references.
+      @method destructor
+      ###
+      destructor: -&gt;
+        if @get("rendered")
+          @_buttonClickHandler.detach()
+          @_buttonClickHandler = null
+          @_titleNode = @_buttonNode = null
+          return
+      
+    ,
+    ATTRS:
+      ###*
+      The title attribute of the widget.       
+      @attribute title
+      @type String
+      @default "No one gave me a title :("
+      ###
+      title:
+        value: "No one gave me a title :("
+    
+    ###*
+    @property HTML_PARSER    
+    @final
+    @type Object
+    ###  
+    HTML_PARSER:
+      title: (srcNode) -&gt;
+        srcNode.getAttribute "title"
+      
+    , 
+      "0.0.1"
+    ,
+      requires: [ "base-build", "widget" ]
+      group: "nfl"
+      skinnable: true
+      
+  MyWidget.NAME = "my-module"
+  Y.namespace('NFL').MyWidget = MyWidget;
+        
+  return true</string>
+	<key>name</key>
+	<string>NFL Widget</string>
+	<key>scope</key>
+	<string>source.coffee</string>
+	<key>tabTrigger</key>
+	<string>nflw</string>
+	<key>uuid</key>
+	<string>0B5375C1-18A1-48A1-93A1-AAC781BD850F</string>
+</dict>
+</plist>

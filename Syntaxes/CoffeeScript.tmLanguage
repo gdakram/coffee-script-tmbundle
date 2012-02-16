@@ -15,7 +15,7 @@
 	<key>foldingStartMarker</key>
 	<string>^\s*class\s+\S.*$|.*(-&gt;|=&gt;)\s*$|.*[\[{]\s*$|###\*.*$</string>
 	<key>foldingStopMarker</key>
-	<string>^\s*$|^\s*[}\]]\s*$|\*###.*$</string>
+	<string>^\s*$|^\s*[}\]]\s*$|###\s*$</string>
 	<key>keyEquivalent</key>
 	<string>^~C</string>
 	<key>name</key>
